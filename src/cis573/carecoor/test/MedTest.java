@@ -136,7 +136,7 @@ public class MedTest extends ActivityInstrumentationTestCase2<MainActivity>{
 			solo.scrollToSide(Solo.RIGHT, (float)0.8);
 		solo.clickOnButton("New Schedule");
 		solo.clickInList(3);
-		solo.clickOnToggleButton("11:00\nAM");
+		solo.clickOnToggleButton("11:00\nAM");//?
 		solo.clickOnToggleButton("5:00\nPM");
 		solo.clickOnButton("OK");	
 		solo.clickOnText("Amoxicillin");
