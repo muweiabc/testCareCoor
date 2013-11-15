@@ -44,7 +44,7 @@ public class MedTest extends ActivityInstrumentationTestCase2<MainActivity>{
 		solo.finishOpenedActivities();
 	}
 	
-	
+	/*
 	public void testAlert() throws Exception {
 		
 		solo.clickOnText("Primary Number");
@@ -57,13 +57,13 @@ public class MedTest extends ActivityInstrumentationTestCase2<MainActivity>{
 		solo.clickOnButton("OK");
 		//solo.clickOnButton("End");
 		//solo.goBack();
-		
 		assert true;
+		
 
-	}
+	}*/
 
 	public void testContacts(){
-		solo.goBackToActivity("MainActivity");
+		//solo.goBackToActivity("MainActivity");
 		//test +
 		solo.scrollToSide(Solo.RIGHT,(float)0.8);
 		solo.clickOnButton("+");
