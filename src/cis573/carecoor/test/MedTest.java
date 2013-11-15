@@ -51,14 +51,12 @@ public class MedTest extends ActivityInstrumentationTestCase2<MainActivity>{
 
 		solo.typeText(0, "2156960581");
 		solo.clickOnButton("OK");
-	
+		solo.waitForDialogToClose();
 		solo.clickOnButton("ALERT");
 
 		//solo.clickOnButton("OK");
 		solo.clickOnButton("Cancel");
-		//solo.goBack();
-		//assert true;
-		
+		//solo.waitForActivity("MainActivity");
 
 	}
 
@@ -75,10 +73,20 @@ public class MedTest extends ActivityInstrumentationTestCase2<MainActivity>{
 		assert actual;
 		
 		//test import
-		//solo.clickOnButton("Import");
-		//solo.clickOnView(solo.getView(id))
-		//actual=solo.searchText("wei");
-		//assert actual; 
+		solo.clickOnButton("Import");
+		solo.waitForActivity("MainActivity");
+		actual=solo.searchText("Yang")&&solo.searchText("344-5");
+		assert actual; 
+		
+		//delete a contact
+		solo.clickLongOnText("wei");
+		solo.clickOnButton("OK");
+		solo.waitForDialogToClose();
+		solo.clickLongOnText("Yang");
+		solo.clickOnButton("OK");
+		solo.waitForDialogToClose();
+		actual=!solo.searchText("Yang");
+		assert actual;
 	}
 	
 	public void testReminder() throws Exception {
@@ -115,6 +123,8 @@ public class MedTest extends ActivityInstrumentationTestCase2<MainActivity>{
 		actual=solo.searchText("Remove");
 		assert actual;
 		solo.clickOnButton("OK");
+		assert solo.waitForDialogToClose();
+		solo.waitForActivity("MainActivity");
 		actual=solo.searchText("Reminder")&&!solo.searchText("Amoxicillin");
 		assert actual;
 	}
