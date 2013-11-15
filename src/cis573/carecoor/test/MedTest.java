@@ -44,7 +44,7 @@ public class MedTest extends ActivityInstrumentationTestCase2<MainActivity>{
 		solo.finishOpenedActivities();
 	}
 	
-	/*
+	
 	public void testAlert() throws Exception {
 		
 		solo.clickOnText("Primary Number");
@@ -54,24 +54,25 @@ public class MedTest extends ActivityInstrumentationTestCase2<MainActivity>{
 	
 		solo.clickOnButton("ALERT");
 
-		solo.clickOnButton("OK");
-		//solo.clickOnButton("End");
+		//solo.clickOnButton("OK");
+		solo.clickOnButton("Cancel");
 		//solo.goBack();
-		assert true;
+		//assert true;
 		
 
-	}*/
+	}
 
 	public void testContacts(){
-		//solo.goBackToActivity("MainActivity");
-		//test +
+
 		solo.scrollToSide(Solo.RIGHT,(float)0.8);
+		
+		//create a contact
 		solo.clickOnButton("+");
 		solo.typeText(0, "wei");
 		solo.typeText(1, "123456");
 		solo.clickOnButton("OK");
-		boolean actual=solo.searchText("123456");
-		assertEquals(true, actual);
+		boolean actual=solo.searchText("123456")&&solo.searchText("wei");
+		assert actual;
 		
 		//test import
 		//solo.clickOnButton("Import");
@@ -83,62 +84,72 @@ public class MedTest extends ActivityInstrumentationTestCase2<MainActivity>{
 	public void testReminder() throws Exception {
 
 		for(int i=1;i<=2;i++)
-			solo.scrollToSide(Solo.RIGHT, (float)0.8);
-		
+			solo.scrollToSide(Solo.RIGHT, (float)0.8);		
 		boolean actual;
 		
+		//create a schedule
 		solo.clickOnButton("New Schedule");
 		solo.assertCurrentActivity("activity call error", "ChooseMedActivity");
-		solo.clickInList(1);
-		solo.assertCurrentActivity("activity call error", "SetScheduleActivity");
+		solo.clickInList(3);
 		
-		solo.clickOnToggleButton("0:00\nAM");
-		solo.clickOnToggleButton("5:00\nPM");
+		solo.assertCurrentActivity("activity call error", "SetScheduleActivity");		
+		solo.clickOnToggleButton("10:00\nAM");
+		solo.clickOnToggleButton("6:00\nPM");
 		solo.scrollDown();
 		solo.clickOnButton("OK");
 		
-		actual=solo.searchText("Reminder")&&solo.searchText("Metformin");
+		actual=solo.searchText("Reminder")&&solo.searchText("Amoxicillin");
 		assert actual;
 		
-		solo.clickOnView(solo.getView("schedule_item_name",0));
-		
+		// take medicine
+		solo.clickOnView(solo.getView("schedule_item_name",0));	
 		solo.assertCurrentActivity("activity call error", "TakeMedicineActivity");
-		
+		solo.scrollDown();
+		solo.clickOnButton("Take");
+		solo.clickOnButton("OK");
+		assert solo.waitForDialogToClose();
 		solo.goBackToActivity("MainActivity");
 		
-		solo.clickLongOnView(solo.getView("schedule_item_name"),0);
+		//remove a reminder
+		solo.clickLongOnText("Amoxicillin");
 		actual=solo.searchText("Remove");
 		assert actual;
-		
-		//solo.getCurrentViews(Class<Button>);
-		//solo.clickOnButton("OK");
-		solo.clickOnButton(0);
-		
-		/*
-		actual=solo.searchText("No medicines are scheduled");
-		assert actual;*/
+		solo.clickOnButton("OK");
+		actual=solo.searchText("Reminder")&&!solo.searchText("Amoxicillin");
+		assert actual;
 	}
 	
 	public void testHistory(){
-		for(int i=1;i<=3;i++)
+		
+		//create a history
+		for(int i=1;i<=2;i++)
 			solo.scrollToSide(Solo.RIGHT, (float)0.8);
+		solo.clickOnButton("New Schedule");
+		solo.clickInList(3);
+		solo.clickOnToggleButton("11:00\nAM");
+		solo.clickOnToggleButton("5:00\nPM");
+		solo.clickOnButton("OK");	
+		solo.clickOnText("Amoxicillin");
+		solo.clickOnButton("Take");
+		solo.clickOnButton("OK");
+		solo.goBackToActivity("MainActivity");
+		
+		//test history
+		solo.scrollToSide(Solo.RIGHT, (float)0.8);
+		boolean actual=solo.searchText("Amoxicillin");
+		assert actual;
+		
+		//remove the schedule
+		solo.scrollToSide(Solo.LEFT,(float)0.8);
+		solo.clickLongOnText("Amoxicillin");
+		solo.clickOnButton("OK");
 	}
 	
 	public void testFriends(){
 		for(int i=1;i<=4;i++)
 			solo.scrollToSide(Solo.RIGHT, (float)0.8);
-		
-	
+			
 		solo.clickOnText("Penn Nursing");
 		solo.clickOnButton("OK");
-		
-		
-		/*
-		actual=solo.searchText("facebook");
-		assert actual;
-		solo.goBack();
-		solo.clickOnText("Penn Engineering");*/
-		
-		
 	}
 }
